@@ -5,35 +5,32 @@
 #include <fstream>
 using namespace std;
 
-const string PARAMS_ERROR = "ERROR: Incorrect parameters";
-const string NO_FILE_ERROR = "ERROR: File not found.";
-const string USAGE_MESSAGE = "USAGE: ./uncompress <compressed_file> <uncompressed_file>"; 
+const char* PARAMS_ERROR = "Incorrect parameters. \nUSAGE: ./uncompress <compressed_file> <uncompressed_file>.";
+const char* NO_FILE_ERROR = "Compressed file not found.";
 
 int main(int argc, char* argv[]){
     if(argc != 3){
-        cout << PARAMS_ERROR << endl << USAGE_MESSAGE << endl;
+        error(PARAMS_ERROR);    
     }
 
     FancyInputStream compFile(argv[1]);
-    //checking if the file is empty
     if(compFile.filesize() == 0){
         FancyOutputStream emptyFile(argv[2]);
         return 0;
     }
+    
     if(!compFile.good()){
-        return -1;
+        error(NO_FILE_ERROR);
     }
 
     //Read the first 256 bytes as the frequencies for the Huffman Tree
     vector<int> uncompFreq(256, 0);
-    //int numOfChars = 0;
     for(int i = 0; i < 256; i++){
         int letterFreq = compFile.read_int();
         if(letterFreq == -1){
             break;
         }
         uncompFreq[i] = letterFreq;
-        //numOfChars += uncompFreq[i];
     }
 
     //Reconstruct the Huffman Tree using the frequencies
