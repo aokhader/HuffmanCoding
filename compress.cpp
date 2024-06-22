@@ -6,21 +6,24 @@
 #include <fstream>
 using namespace std;
 
+const char* PARAMS_ERROR = "Incorrect parameters. \nUSAGE: ./uncompress <compressed_file> <uncompressed_file>";
+const char* NO_FILE_ERROR = "File not found.";
+const char* DEST_FILE_ERROR = "Unable to write to destination file.";
+
 int main(int argc, char* argv[]){
     if(argc != 3){
-        error("Incorrect parameters. \nUSAGE: ./compress <original_file> <compressed_file>.");    
+        error(PARAMS_ERROR);    
     }
 
     FancyInputStream encodeFile(argv[1]);
     if(!encodeFile.good()){
-        error("File not found.");
+        error(NO_FILE_ERROR);
     }
     FancyOutputStream destFile(argv[2]);
     if(!destFile.good()){
-        error("Unable to write to destination file.");
+        error(DEST_FILE_ERROR);
     }
 
-    //Reading the characters one byte at a time if it was characters
     int fileSize = encodeFile.filesize();
     vector<int> frequencies(256,0);
     int symbolFreq;
@@ -39,7 +42,7 @@ int main(int argc, char* argv[]){
 
     /**
      * Now write the file header.
-     * Consists of the frequencies we need to make the Huffman Tree (and alphabet to optimize later)
+     * Consists of the frequencies we need to make the Huffman Tree
      */ 
     for(int i = 0; i < 256; i++){
         destFile.write_int(frequencies[i]);
@@ -53,7 +56,6 @@ int main(int argc, char* argv[]){
     }
 
     for(int i = 0; i < fileSize; i++){
-        //DON'T CHECK FOR EOF. IT CAUSES DECODING ISSUES
         char letterToEncode = encodeFile.read_byte();
         HuffmanTree.encode(letterToEncode, destFile);
     }
