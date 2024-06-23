@@ -15,4 +15,7 @@ After running the makefile using the command ``make``, you get two executables, 
 ./compress <original_file> <compressed_file_name>
 ./uncompress <compressed_file> <uncompressed_file_name>
 ```
+For ``compress``, the first argument is the file you want to compress, and the second argument is the nane you want to call the compressed file.
+
+For ``uncompress``, the first argument is the compressed file you created via ``compress`` and the second argument is the name you want to call the uncompressed file.
 
