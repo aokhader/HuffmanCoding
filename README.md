@@ -1,6 +1,6 @@
 # HuffmanCoding
 ## Description
-Using this project to build the executables for compression and uncompression, you can compress and uncompress arbitrary input files using the Huffman Encoding compression technique. For files that are under 10MB, the program will increase the space efficiency of the compression by using only using three out of the four bytes to store the frequencies of the symbols. 
+Using this project to build the executables for compression and uncompression, you can compress and uncompress arbitrary input files using the Huffman Encoding compression technique. For files that are under 10MB, the program will increase the space efficiency of the compression by 25%; it will use only using three out of the four bytes to store the frequencies and the file contents.
 
 ## Assumptions
 This program assumes you are running on a Linux machine or a virtual Linux machine such as Ubuntu's WSL. If you are running on a Windows then use a virtual Linux machine to run the program, or install a package that allows you to run a makefile if you want to use the ease of running it. To get Ubuntu, you follow the instructions in this [link](https://ubuntu.com/desktop/wsl).
