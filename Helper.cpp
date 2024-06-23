@@ -27,6 +27,16 @@ int FancyInputStream::read_int() {
     if(buffer_index != 8) {
         error("Attempting to read int when bitwise buffer is not empty");
     }
+
+    unsigned int num;                          // temporary variable to store the number
+    input_file.read((char*)&num, sizeof(num)); // read the number and store it in 'num'
+    if(input_file.eof()) {                     // not enough bytes in the file to read it
+        error("Not enough bytes to read the next int");
+    }
+    return num;
+}
+
+int FancyInputStream::read_int_optimal(){
     //We read from the buffer three times
     unsigned char byte2 = read_byte();
     unsigned char byte1 = read_byte();
@@ -38,38 +48,8 @@ int FancyInputStream::read_int() {
     combinedNum = combinedNum | byte1;
     combinedNum = combinedNum << 8;
     combinedNum = combinedNum | byte2;
-    
-    /*
-    int combinedNum = 0;
-    for(int i = 0; i < 3; i++){
-        unsigned char byteX = read_byte();
-        combinedNum = (combinedNum << 8) | byteX;
-    }
-    */
-    /*
-    int combinedNum;
-    unsigned char byteToRead = read_byte();
-    byteToRead = byteToRead << 16;
-    combinedNum = byteToRead;
-
-    byteToRead = read_byte();
-    byteToRead = byteToRead << 8;
-    combinedNum = combinedNum | byteToRead;
-
-    byteToRead = read_byte();
-    combinedNum = combinedNum | byteToRead;
-    */
 
     return combinedNum;
-    
-    /*
-    unsigned int num;                          // temporary variable to store the number
-    input_file.read((char*)&num, sizeof(num)); // read the number and store it in 'num'
-    if(input_file.eof()) {                     // not enough bytes in the file to read it
-        error("Not enough bytes to read the next int");
-    }
-    return num;
-    */
 }
 
 int FancyInputStream::read_byte() {
@@ -110,16 +90,10 @@ void FancyOutputStream::write_int(int const & num) {
     if(buffer_index != 0) {
         error("Attempting to write int when bitwise buffer is not empty");
     }
+    output_file.write((char*)&num, sizeof(num)); // write 'num' to file
+}
 
-    //We only need the last 3 bytes
-    //int temp = num;
-    //unsigned char byteToWrite = temp;
-    /*for(int i = 0; i < 3; i++){
-        write_byte(byteToWrite);
-        temp = temp >> 8;
-        byteToWrite = temp;
-    }
-    */
+void FancyOutputStream::write_int_optimal(int const & num){
     int temp = num;
     unsigned char byteToWrite = temp; 
 
@@ -134,8 +108,6 @@ void FancyOutputStream::write_int(int const & num) {
     write_byte(byteToWrite);
     temp = temp >> 8;
     byteToWrite = temp;
-    
-    //output_file.write((char*)&num, sizeof(num)); // write 'num' to file
 }
 
 void FancyOutputStream::write_byte(unsigned char const & byte) {

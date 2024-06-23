@@ -6,24 +6,22 @@
 #include <fstream>
 using namespace std;
 
-const char* PARAMS_ERROR = "Incorrect parameters. \nUSAGE: ./uncompress <compressed_file> <uncompressed_file>";
-const char* NO_FILE_ERROR = "File not found.";
-const char* DEST_FILE_ERROR = "Unable to write to destination file.";
 
 int main(int argc, char* argv[]){
     if(argc != 3){
-        error(PARAMS_ERROR);    
+        error("Incorrect parameters. \nUSAGE: ./compress <original_file> <compressed_file>.");    
     }
 
     FancyInputStream encodeFile(argv[1]);
     if(!encodeFile.good()){
-        error(NO_FILE_ERROR);
+        error("File not found.");
     }
     FancyOutputStream destFile(argv[2]);
     if(!destFile.good()){
-        error(DEST_FILE_ERROR);
+        error("Unable to write to destination file.");
     }
 
+    //Reading the characters one byte at a time if it was characters
     int fileSize = encodeFile.filesize();
     vector<int> frequencies(256,0);
     int symbolFreq;
@@ -41,11 +39,26 @@ int main(int argc, char* argv[]){
     }
 
     /**
-     * Now write the file header.
-     * Consists of the frequencies we need to make the Huffman Tree
+     * Now write the file header. Consists of the frequencies we need to make the Huffman Tree.
+     * If the file size is < 10MB we use the optimal encoding. Else we use normal encoding.
      */ 
+    bool greaterThan10MB = false;
+    if(fileSize > 10000000){
+        greaterThan10MB = true;
+        destFile.write_bit(1);
+    }
+    else{
+        destFile.write_bit(0);
+    }
+    destFile.flush_bitwise();
+
     for(int i = 0; i < 256; i++){
-        destFile.write_int(frequencies[i]);
+        if(greaterThan10MB){
+            destFile.write_int(frequencies[i]);
+        }
+        else{
+            destFile.write_int_optimal(frequencies[i]);
+        }
     }
 
     //Now that we have the tree, encode the file
@@ -59,6 +72,6 @@ int main(int argc, char* argv[]){
         char letterToEncode = encodeFile.read_byte();
         HuffmanTree.encode(letterToEncode, destFile);
     }
-  
+
     return 0;
 }

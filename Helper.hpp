@@ -49,6 +49,12 @@ class FancyInputStream {
         int read_int();
 
         /**
+         * Read a single integer from the file when file <= 10MB,
+         * or crash if there are not enough bytes left in the file
+         */
+        int read_int_optimal();
+
+        /**
          * Read a single byte from the file as an int in the range [0,255],
          * or return -1 if we've reached the end of the file and no more bytes exist to read
          */
@@ -92,6 +98,11 @@ class FancyOutputStream {
          * Write a single (usually 4-byte) integer to the file
          */
         void write_int(int const & num);
+
+        /**
+         * Write a single integer to the file when file size <= 10MB
+         */
+        void write_int_optimal(int const & num);
 
         /**
          * Write a single byte to the file
