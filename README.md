@@ -1,9 +1,9 @@
 # HuffmanCoding
 ## Description
-Using the program and after you build the programs for compression and uncompression. you can compress and uncompress arbitrary input files using the Huffman Encoding compression. 
+Using the program and after you build the programs for compression and uncompression. you can compress and uncompress arbitrary input files using the Huffman Encoding compression technique.
 
 ## Assumptions
-This program assumes you are running on a Linux machine or a virtual Linux machine such as WSL. If you are running on a Windows then use a virtual Linux machine to run the program, or install a package that allows you to run a makefile if you want to use the ease of running it. 
+This program assumes you are running on a Linux machine or a virtual Linux machine such as Ubuntu's WSL. If you are running on a Windows then use a virtual Linux machine to run the program, or install a package that allows you to run a makefile if you want to use the ease of running it. To get Ubuntu, you follow the instructions in this ![link](https://ubuntu.com/desktop/wsl)
 
 It also assumes that the characters in the input file comes from the 256 ASCII characters.
 
