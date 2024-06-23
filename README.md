@@ -8,7 +8,7 @@ This program assumes you are running on a Linux machine or a virtual Linux machi
 It also assumes that the characters in the input file comes from the 256 ASCII characters.
 
 ## Usage
-After running the makefile using the command ``make``, you get two executables, one for each command you want to do:
+After running the makefile using the command ``make``, you get two executables, one for each command you want to do: ``./compress`` and ``./uncompress``. The usage of the two executables are shown below:
 ```
 ./compress <original_file> <compressed_file_name>
 ./uncompress <compressed_file> <uncompressed_file_name>
